@@ -1,0 +1,58 @@
+import random
+import time
+
+class Question:
+    def __init__(self, question, options, correct_answer):
+        self.question = question
+        self.options = options
+        self.correct_answer = correct_answer
+
+    def display_question(self):
+        print(self.question)
+        for i, option in enumerate(self.options):
+            print(f"{i + 1}. {option}")
+
+    def check_answer(self, user_answer):
+        return user_answer == self.correct_answer
+
+
+class Quiz:
+    def __init__(self):
+        self.questions = []
+        self.score = float(0)
+        self.timer = 0
+
+    def add_question(self, question):
+        self.questions.append(question)
+
+    def start_quiz(self):
+        print("Welcome to the Quiz!")
+        self.timer = time.time()
+        random.shuffle(self.questions)
+        for question in self.questions:
+            question.display_question()
+            user_answer = input("Enter your answer (1-4): ")
+            if question.check_answer(int(user_answer)):
+                self.score += 1
+            else:
+              self.score-=1/2
+            self.end_quiz()
+
+    def end_quiz(self):
+        elapsed_time = round(time.time() - self.timer)
+        print(f"Quiz completed! Your score is: {self.score}/{len(self.questions)}")
+        print(f"Time taken: {elapsed_time} seconds")
+
+
+if __name__ == "__main__":
+    
+    q1 = Question("What is the capital of France?", ["Paris", "London", "Berlin", "Madrid"], 1)
+    q2 = Question("Which planet is known as the Red Planet?", ["Earth", "Mars", "Venus", "Jupiter"], 2)
+    q3 = Question("Who wrote 'To Kill a Mockingbird'?", ["Harper Lee", "J.K. Rowling", "Stephen King", "Mark Twain"], 1)
+
+    quiz = Quiz()
+    quiz.add_question(q1)
+    quiz.add_question(q2)
+    quiz.add_question(q3)
+
+    quiz.start_quiz()
